@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,7 +26,7 @@ class QuestionRepositoryTest {
 
        Question q3 = Question.builder().
                content("질문 내용")
-               .subject("질문 제목")
+               .subject("질문해주세요")
                .build();
        Question q4 = questionRepository.save(q3);
        assertEquals(2, q4.getId());
