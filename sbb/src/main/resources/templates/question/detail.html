@@ -10,5 +10,10 @@
 <body>
     <h1 th:text="${question.subject}">상세 페이지</h1>
     <div th:text="${question.content}"></div>
+
+    <form th:action="@{|/answer/create/${question.id}|}" method="post">
+        <textarea id="contents" name="contents" rows="15"></textarea>
+        <input type="submit" value="답변 등록">
+    </form>
 </body>
 </html>

@@ -9,17 +9,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/question")
 @Slf4j
 public class QuestionController {
 
     private final QuestionService questionService;
 
-    @GetMapping("/question/list")
+    @GetMapping("/list")
     public String list(Model model){
         List<Question> questionList = questionService.getList();
         log.info("list: {}", questionList);
@@ -27,7 +29,7 @@ public class QuestionController {
         return "question/list";
     }
 
-    @GetMapping("/question/detail/{id}")
+    @GetMapping("/detail/{id}")
     public String detail(@PathVariable("id") Long id, Model model) {
         log.info("id: {}", id);
         Question question = questionService.getQuestion(id);
