@@ -9,11 +9,15 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 public class AnswerService {
-    private final AnswerRepository answerRepository;
 
-    public void create(Question question, String contents){
-        Answer answer = Answer.builder().content(contents).question(question).build();
+    private final AnswerRepository answerRespoitory;
 
-        answerRepository.save(answer);
+    public void create(Question question, String content) {
+        Answer answer = Answer.builder()
+                .content(content)
+                .question(question)
+                .build();
+
+        answerRespoitory.save(answer);
     }
 }

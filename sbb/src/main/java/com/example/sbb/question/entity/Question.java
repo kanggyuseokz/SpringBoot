@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-//@ToString
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

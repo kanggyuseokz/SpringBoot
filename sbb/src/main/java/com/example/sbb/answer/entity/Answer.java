@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @EntityListeners(AuditingEntityListener.class)
 public class Answer {
@@ -26,7 +26,6 @@ public class Answer {
     private String content;
 
     @CreatedDate
-    @Column(nullable = false, updatable = false)
     private LocalDateTime created;
 
     @ManyToOne(fetch = FetchType.LAZY)

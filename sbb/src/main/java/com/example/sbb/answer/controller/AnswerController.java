@@ -12,22 +12,21 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@RequiredArgsConstructor
 @Slf4j
 @Controller
 @RequestMapping("/answer")
+@RequiredArgsConstructor
 public class AnswerController {
 
     private final QuestionService questionService;
     private final AnswerService answerService;
 
     @PostMapping("/create/{id}")
-    public String create(@PathVariable("id") Long id, @RequestParam("contents") String contents) {
+    public String createAnswer(@PathVariable Long id, @RequestParam(value = "content") String content) {
         Question question = questionService.getQuestion(id);
-        answerService.create(question, contents);
-        log.info("===============>id: {}, {}", id, contents);
+        answerService.create(question, content);
+        log.info("Creating answer for question ID: {}, content: {}", id, content);
         return "redirect:/question/detail/" + id;
     }
-
 
 }

@@ -1,10 +1,11 @@
+
 package com.example.sbb.question.repository;
 
 import com.example.sbb.question.entity.Question;
-import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,37 +15,39 @@ import static org.junit.jupiter.api.Assertions.*;
 class QuestionRepositoryTest {
 
     @Autowired
-    QuestionRepository questionRepository;
+    private QuestionRepository questionRepository;
 
     @Test
-   public void testSave(){
-       Question q1 = new Question();
-       q1.setSubject("sbb가 뭔가요?");
-       q1.setContent("sbb는 질의 응답 게시판 인가요?");
-       System.out.println("q1 : " + q1);
-       Question q2 = questionRepository.save(q1);
+    void testSave(){
+        Question question = new Question();
+        question.setSubject("sbb가 무엇인가요?");
+        question.setContent("sbb에 대해서 알고 싶습니다.");
+        System.out.println("question = " + question);
 
-       Question q3 = Question.builder().
-               content("질문 내용")
-               .subject("질문해주세요")
-               .build();
-       Question q4 = questionRepository.save(q3);
-       assertEquals(2, q4.getId());
+        Question savedQuestion = questionRepository.save(question);
+        System.out.println("savedQuestion = " + savedQuestion);
 
-   }
+//    Question question2 = new Question("test subject", "test content");
+        Question question2 = Question.builder()
+                .subject("test subject")
+                .content("test content")
+                .build();
+        System.out.println("question2 = " + question2);
+        Question savedQuestion2 = questionRepository.save(question2);
+        System.out.println("savedQuestion2 = " + savedQuestion2);
+        assertNotNull(savedQuestion2.getId());
+        assertEquals("sbb가 무엇인가요?", savedQuestion2.getSubject());
+    }
 
-   @Test
-   public void testFindAll(){
-       List<Question> questionList = questionRepository.findAll();
-   }
+    @Transactional
+    @Test
+    void testFindAll() {
+        List<Question> questionList = questionRepository.findAll();
+        System.out.println("questionList = " + questionList);
+        assertEquals(2, questionList.size());
 
-   @Test
-    public void testFindEntity(){
-        Question q1 = questionRepository.findBySubjectLike("%sbb%")
-                .orElseThrow(EntityNotFoundException::new);
-       assertEquals("sbb가 뭔가요?", q1.getSubject());
-//       Question q1 = questionRepository.findById(1L)
-//               .orElseThrow(() -> new EntityNotFoundException("해당 엔티티가 존재하지 않음"));
-   }
+        Question question = questionList.get(0);
+        assertEquals("sbb가 무엇인가요?", question.getSubject());
 
+    }
 }

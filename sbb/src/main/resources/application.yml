@@ -1,37 +1,49 @@
 server:
-  port: 8080
+  port: 8080                    # 포트 번호
   servlet:
     encoding:
       charset: UTF-8
       force: true
 
-
-
 spring:
-  jpa:
-    open-in-view: true      #
-    hibernate:
-      ddl-auto: update      # create, update, ...
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy # camelcase -> underscore
-    show-sql: true          # SQL
-    properties:
-      hibernate:
-        format_sql: true    # SQL format
-        use_sql_comments: true
+  application:
+    name: sbb
 
   devtools:
     livereload:
       enabled: true
     restart:
-      enabled: false
+      enabled: true
 
+  thymeleaf:
+    cache: false
+  web:
+    resources:
+      cache:
+        period: 0
+      chain:
+        cache: false
 
-  application:
-    name: sbb
-
+  ####################################
+  # MySQL 설정
+  ####################################
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/sbb_db?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false
     username: root
     password: 1234
+
+  ####################################
+  # JPA 설정
+  ####################################
+  jpa:
+    open-in-view: true      #
+    hibernate:
+      ddl-auto: update      # create, update, ...
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy # 카멜케이스를 언더스코어로 변환
+    show-sql: true          # SQL 출력 여부
+    properties:
+      hibernate:
+        format_sql: true    # SQL 포맷팅 여부
+        dialect: org.hibernate.dialect.MySQL8Dialect # MySQL 8.x 버전 사용
