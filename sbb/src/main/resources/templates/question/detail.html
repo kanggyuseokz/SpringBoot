@@ -6,11 +6,18 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
 </head>
 <body>
     <h1 th:text="${question.subject}">상세 페이지</h1>
     <div th:text="${question.content}"></div>
-
+    <h5 th:text="|${#lists.size(question.answerList)}개의 답변이 있습니다.|"></h5>
+    <div>
+        <ul>
+            <li th:each="answer: ${question.answerList}"
+                th:text="${answer.contents}"></li>
+        </ul>
+    </div>
     <form th:action="@{|/answer/create/${question.id}|}" method="post">
         <textarea id="contents" name="contents" rows="15"></textarea>
         <input type="submit" value="답변 등록">

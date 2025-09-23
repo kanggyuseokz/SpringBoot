@@ -23,9 +23,9 @@ public class AnswerController {
 
     @PostMapping("/create/{id}")
     public String create(@PathVariable("id") Long id, @RequestParam("contents") String contents) {
-        log.info("===============>id: {}, {}", id, contents);
         Question question = questionService.getQuestion(id);
         answerService.create(question, contents);
+        log.info("===============>id: {}, {}", id, contents);
         return "redirect:/question/detail/" + id;
     }
 

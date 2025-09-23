@@ -3,6 +3,8 @@ package com.example.sbb.answer.entity;
 import com.example.sbb.question.entity.Question;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
@@ -12,6 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@EntityListeners(AuditingEntityListener.class)
 public class Answer {
 
     @Id
@@ -22,6 +25,8 @@ public class Answer {
     @Column(columnDefinition = "TEXT")
     private String content;
 
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
     private LocalDateTime created;
 
     @ManyToOne(fetch = FetchType.LAZY)

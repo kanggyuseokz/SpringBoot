@@ -12,12 +12,13 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@ToString
-@AllArgsConstructor
+//@ToString
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @EntityListeners(AuditingEntityListener.class)
 public class Question {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "question_id")
@@ -30,8 +31,8 @@ public class Question {
     private String content;
 
     @CreatedDate
-    private LocalDateTime created;  // 생성
+    private LocalDateTime created;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "question", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
     private List<Answer> answerList;
 }
