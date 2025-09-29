@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -38,10 +39,27 @@ public class QuestionController {
     }
 
     @GetMapping("/create")
-    public String createQuestion(@Valid QuestionDto questionDto, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()) return "question/inputForm";
+    public String createQuestion(QuestionDto questionDto) {
+        return "question/inputForm";
+    }
 
+    @PostMapping("/create")
+    public String createQuestion(@Valid QuestionDto questionDto, BindingResult bindingResult) {
+//  public String createQuestion(QuestionFormDto questionFormDto) {
+//  public String createQuestion(@RequestParam(value = "subject") String subject,
+//                               @RequestParam(value = "content") String content) {
+//    QuestionFormDto questionFormDto = QuestionFormDto.builder()
+//        .subject(subject)
+//        .content(content)
+//        .build();
+
+        if (bindingResult.hasErrors()) {
+            return "question/inputForm";
+        }
+
+        // 필요시 예외 처리 추가
         questionService.create(questionDto);
         return "redirect:/question/list";
     }
+
 }
