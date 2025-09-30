@@ -1,5 +1,6 @@
 package com.example.sbb.question.controller;
 
+import com.example.sbb.answer.dto.AnswerDto;
 import com.example.sbb.question.dto.QuestionDto;
 import com.example.sbb.question.entity.Question;
 import com.example.sbb.question.repository.QuestionRepository;
@@ -35,6 +36,7 @@ public class QuestionController {
     public String detail(@PathVariable("id") Long id, Model model) {
         Question question = questionService.getQuestion(id);
         model.addAttribute("question", question);
+        model.addAttribute("answerDto", new AnswerDto());
         return "question/detail";
     }
 
@@ -45,14 +47,6 @@ public class QuestionController {
 
     @PostMapping("/create")
     public String createQuestion(@Valid QuestionDto questionDto, BindingResult bindingResult) {
-//  public String createQuestion(QuestionFormDto questionFormDto) {
-//  public String createQuestion(@RequestParam(value = "subject") String subject,
-//                               @RequestParam(value = "content") String content) {
-//    QuestionFormDto questionFormDto = QuestionFormDto.builder()
-//        .subject(subject)
-//        .content(content)
-//        .build();
-
         if (bindingResult.hasErrors()) {
             return "question/inputForm";
         }

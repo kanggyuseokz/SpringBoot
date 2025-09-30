@@ -18,7 +18,7 @@ class QuestionRepositoryTest {
     private QuestionRepository questionRepository;
 
     @Test
-    void testSave(){
+    void testSave() {
         Question question = new Question();
         question.setSubject("sbb가 무엇인가요?");
         question.setContent("sbb에 대해서 알고 싶습니다.");

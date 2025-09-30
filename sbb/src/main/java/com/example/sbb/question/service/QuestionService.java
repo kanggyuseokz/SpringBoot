@@ -26,7 +26,7 @@ public class QuestionService {
     }
 
     public Question getQuestion(Long id) {
-        return questionRepository.findById(id).orElseThrow(() ->  new IllegalArgumentException("Question not found with id: " + id));
+        return questionRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Question not found with id: " + id));
     }
 
     public void create(QuestionDto questionDto) {

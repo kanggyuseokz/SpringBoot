@@ -6,6 +6,7 @@ Spring Boot를 활용하여 웹 애플리케이션을 개발하는 과정을 단
 ---
 
 ## 🗂️ 강의 목표
+
 - Spring Boot의 기본 개념 및 구조 이해
 - Spring Boot 프로젝트 생성 및 실행 방법 습득
 - Controller, Service, Repository 계층 구조 학습
@@ -17,6 +18,7 @@ Spring Boot를 활용하여 웹 애플리케이션을 개발하는 과정을 단
 ---
 
 ## 📌 강의 주요 내용
+
 1. **Spring Boot 소개**
     - Spring vs Spring Boot 차이
     - 의존성 관리 (Spring Initializr, Maven/Gradle)
@@ -46,6 +48,7 @@ Spring Boot를 활용하여 웹 애플리케이션을 개발하는 과정을 단
 ---
 
 ## 🛠️ 개발 환경
+
 - **Language**: Java 17 (또는 11)
 - **Framework**: Spring Boot 3.x
 - **Build Tool**: Maven (또는 Gradle)

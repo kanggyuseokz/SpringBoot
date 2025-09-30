@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AnswerService {
 
-    private final AnswerRepository answerRespoitory;
+    private final AnswerRepository answerRepository;
 
     public void create(Question question, String content) {
         Answer answer = Answer.builder()
@@ -18,6 +18,6 @@ public class AnswerService {
                 .question(question)
                 .build();
 
-        answerRespoitory.save(answer);
+        answerRepository.save(answer);
     }
 }

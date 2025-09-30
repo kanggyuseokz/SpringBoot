@@ -13,15 +13,17 @@
 
 <div layout:fragment="content" class="container my-3">
     <h5 class="my-3 border-bottom pb-2">질문 등록</h5>
-    <form th:action="@{/question/create}" th:object="${questionFormDto}"  method="post">
+    <form th:action="@{/question/create}" th:object="${questionDto}" method="post">
         <div class="mb-3 ">
             <label for="subject" class="form-label">제목</label>
-            <input type="text" class="form-control" id="subject" name="subject" placeholder="제목을 입력하세요" th:field="*{subject}" />
+            <input type="text" class="form-control" id="subject" name="subject" placeholder="제목을 입력하세요"
+                   th:field="*{subject}"/>
             <p th:if="${#fields.hasErrors('subject')}" th:errors="*{subject}" class="fieldError">Incorrect data</p>
         </div>
         <div class="mb-3">
             <label for="content" class="form-label">내용</label>
-            <textarea class="form-control" id="content" name="content" rows="10" placeholder="내용을 입력하세요" th:field="*{content}"></textarea>
+            <textarea class="form-control" id="content" name="content" rows="10" placeholder="내용을 입력하세요"
+                      th:field="*{content}"></textarea>
             <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="fieldError">Incorrect data</p>
         </div>
         <button type="submit" class="btn btn-primary my-2">저장하기</button>
