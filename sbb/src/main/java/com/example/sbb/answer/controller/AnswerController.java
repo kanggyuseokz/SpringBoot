@@ -36,8 +36,8 @@ public class AnswerController {
 
     @PostMapping("/create/{id}")
     public String createAnswer(@PathVariable Long id,
-                               @Valid AnswerDto answerDto, // ⭐ DTO 객체와 @Valid 추가
-                               BindingResult bindingResult, // ⭐ BindingResult 추가
+                               @Valid AnswerDto answerDto,
+                               BindingResult bindingResult,
                                Model model) { // Model 객체 추가 (오류 시 재전달용)
 
         Question question = questionService.getQuestion(id);
@@ -52,8 +52,7 @@ public class AnswerController {
         }
 
         // 2. 서비스 로직 실행 (오류가 없을 경우)
-        answerService.create(question, answerDto.getContent());
-
+        answerService.create(question, answerDto);
         log.info("Creating answer for question ID: {}, content: {}", id, answerDto.getContent());
 
         // 3. 리다이렉트

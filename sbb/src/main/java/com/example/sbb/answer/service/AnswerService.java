@@ -1,5 +1,6 @@
 package com.example.sbb.answer.service;
 
+import com.example.sbb.answer.dto.AnswerDto;
 import com.example.sbb.answer.entity.Answer;
 import com.example.sbb.answer.repository.AnswerRepository;
 import com.example.sbb.question.entity.Question;
@@ -12,9 +13,9 @@ public class AnswerService {
 
     private final AnswerRepository answerRepository;
 
-    public void create(Question question, String content) {
+    public void create(Question question, AnswerDto answerDto) {
         Answer answer = Answer.builder()
-                .content(content)
+                .content(answerDto.getContent())
                 .question(question)
                 .build();
 
