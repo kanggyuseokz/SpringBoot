@@ -21,8 +21,12 @@ public class QuestionService {
 
     private final QuestionRepository questionRepository;
 
-    public List<Question> getList() {
-        return questionRepository.findAll();
+    // 페이지 기능 추가
+    public Page<Question> getList(int page) {
+        List<Sort.Order> sorts = new ArrayList<Sort.Order>(); // 여러 정렬 기준을 위한 리스트
+        sorts.add(Sort.Order.desc("created")); // 생성일 기준 내림차순 정렬
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts)); // 페이지당 10개씩 조회 + 정렬 기능
+        return questionRepository.findAll(pageable);
     }
 
     public Question getQuestion(Long id) {

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+    <head>
+        <meta charset="UTF-8">
+        <title>Question List</title>
+    </head>
+    <div layout:fragment="content">
+        <div class="container my-3">
+            <h1>질문 목록</h1>
+            <table class="table table-striped">
+                <thead class="table-dark">
+                <tr>
+                    <th class="text-center">제목</th>
+                    <th class="text-center">작성일</th>
+                </tr>
+                </thead>
+                <tbody class="text-center">
+                <tr th:each="question : ${questionList}">
+                    <td>
+                        <a th:href="@{|/question/detail/${question.id}|}" th:text="${question.subject}"></a>
+                    </td>
+                    <td th:text="${#temporals.format(question.created, 'yyyy-MM-dd HH:mm')}"></td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="d-flex justify-content-end">
+                <a th:href="@{/question/create}" class="btn btn-primary">질문 등록</a>
+            </div>
+        </div>
+    </div>
+</html>
