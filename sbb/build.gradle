@@ -37,6 +37,14 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:5.18.0'
     runtimeOnly 'com.mysql:mysql-connector-j:8.3.0'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // Security 추가
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+    // test
+    testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'org.mockito:mockito-core:5.18.0'
+
 }
 
 tasks.named('test') {

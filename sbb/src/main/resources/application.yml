@@ -17,12 +17,19 @@ spring:
 
   thymeleaf:
     cache: false
+
   web:
     resources:
       cache:
         period: 0
       chain:
         cache: false
+
+  security:
+    user:
+      name: test
+      password: 1111
+      roles: USER
 
   ####################################
   # MySQL 설정
