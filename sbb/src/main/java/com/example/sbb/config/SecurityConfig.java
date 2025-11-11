@@ -6,25 +6,41 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
+    @Bean // 스프링 컨테이너에 PasswordEncoder 객체를 빈으로 등록
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
 
-        http.formLogin(Customizer.withDefaults());
+        http.formLogin(form -> form
+                .loginPage("/member/login") // 로그인 페이지 URL
+                .defaultSuccessUrl("/")
+                .failureUrl("/member/login/error")
+                .usernameParameter("username")
+                .passwordParameter("password")
+                .permitAll());
+
         http.logout(Customizer.withDefaults());
 
         http.authorizeHttpRequests((authorize) ->
-                authorize.requestMatchers("/css/**", "/js/**").permitAll()
+                authorize.requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
                         .requestMatchers("/member/**").permitAll()
                         .requestMatchers("/").permitAll()
                         .anyRequest().authenticated());
 
         return http.build();
+
+
     }
 
 }

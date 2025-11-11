@@ -86,4 +86,13 @@
     </form>
 
 </div>
+<!-- $ 형식을 사용하기 전에는 반드시 jQuery 추가 필요!! -->
+<th:block layout:fragment="script">
+    <script th:inline="javascript">
+        $(function(){
+            let errorMessage = [[${errorMessage}]];
+            if(errorMessage != null){ alert(errorMessage); }
+        });
+    </script>
+</th:block>
 </html>

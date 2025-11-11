@@ -5,3 +5,35 @@ textarea {
 input[type=submit] {
     margin-top: 10px;
 }
+
+html {
+    position: relative;
+    min-height: 100%;
+    margin: 0;
+}
+
+body {
+    min-height: 100%;
+    background-color: #f0f2f5;
+}
+
+.content {
+    margin: 50px 200px;
+}
+
+.footer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    padding: 15px;
+    text-align: center;
+}
+
+.container.my-3 {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
