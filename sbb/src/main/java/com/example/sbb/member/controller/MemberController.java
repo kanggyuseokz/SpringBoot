@@ -7,8 +7,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
@@ -65,14 +65,15 @@ public class MemberController {
         return "/member/login";
     }
 
-//    @GetMapping("/logout")
-//    public String performLogout(HttpServletRequest request, HttpServletResponse response) {
-//        log.info("=======> logout");
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        if (authentication != null) {
-//            new SecurityContextLogoutHandler().logout(request, response, authentication);
-//        }
-//        return "redirect:/";
-//    }
+    @GetMapping("/logout")
+    public String performLogout(HttpServletRequest request, HttpServletResponse response) {
+        log.info("=======> logout");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if(auth != null) {
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+
+        return "redirect:/";
+    }
 
 }
