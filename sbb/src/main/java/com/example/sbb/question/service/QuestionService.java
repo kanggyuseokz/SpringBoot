@@ -1,5 +1,6 @@
 package com.example.sbb.question.service;
 
+import com.example.sbb.member.entity.Member;
 import com.example.sbb.question.dto.QuestionDto;
 import com.example.sbb.question.entity.Question;
 import com.example.sbb.question.repository.QuestionRepository;
@@ -33,10 +34,11 @@ public class QuestionService {
         return questionRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Question not found with id: " + id));
     }
 
-    public void create(QuestionDto questionDto) {
+    public void create(QuestionDto questionDto, Member member) {
         Question question = Question.builder()
                 .subject(questionDto.getSubject())
                 .content(questionDto.getContent())
+                .author(member)
                 .build();
         questionRepository.save(question);
     }

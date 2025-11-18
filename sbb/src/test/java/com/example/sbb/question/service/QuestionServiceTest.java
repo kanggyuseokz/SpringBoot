@@ -1,5 +1,6 @@
 package com.example.sbb.question.service;
 
+import com.example.sbb.member.entity.Member;
 import com.example.sbb.question.dto.QuestionDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,8 @@ class QuestionServiceTest {
                     .subject("질문 제목" + i)
                     .content("질문 내용" + i)
                     .build();
-            questionService.create(questionDto);
+//            Member member;
+//            questionService.create(questionDto, member);
         }
     }
 

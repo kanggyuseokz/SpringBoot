@@ -15,7 +15,9 @@
         <!-- Header  -->
         <div th:replace="~{fragments/header::header}"></div>
         <!-- 기본 템플릿 안에 삽입될 내용 Start -->
-        <th:block layout:fragment="content" class="content"></th:block>
+        <div class="content-wrapper pb-5">
+            <th:block layout:fragment="content" class="content"></th:block>
+        </div>
         <!-- Footer -->
         <div th:replace="~{fragments/footer::footer}"></div>
         <!-- Bootstrap JS -->

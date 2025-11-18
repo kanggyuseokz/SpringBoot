@@ -34,8 +34,6 @@ public class SecurityConfig {
 
         http.logout(Customizer.withDefaults());
 
-        http.csrf(csrf -> csrf.disable());
-
         http.authorizeHttpRequests((authorize) ->
                 authorize.requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
                         .requestMatchers("/member/**").permitAll()

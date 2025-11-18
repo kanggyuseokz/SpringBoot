@@ -1,5 +1,7 @@
 package com.example.sbb.answer.entity;
 
+import com.example.sbb.audit.BaseEntity;
+import com.example.sbb.member.entity.Member;
 import com.example.sbb.question.entity.Question;
 import jakarta.persistence.*;
 import lombok.*;
@@ -14,8 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@EntityListeners(AuditingEntityListener.class)
-public class Answer {
+public class Answer extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,10 +26,11 @@ public class Answer {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    @CreatedDate
-    private LocalDateTime created;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id", nullable = false)
     private Question question;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member author;
 }

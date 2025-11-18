@@ -1,6 +1,8 @@
 package com.example.sbb.question.controller;
 
 import com.example.sbb.answer.dto.AnswerDto;
+import com.example.sbb.member.entity.Member;
+import com.example.sbb.member.service.MemberService;
 import com.example.sbb.question.dto.QuestionDto;
 import com.example.sbb.question.entity.Question;
 import com.example.sbb.question.repository.QuestionRepository;
@@ -13,7 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -22,6 +24,7 @@ import java.util.List;
 public class QuestionController {
 
     private final QuestionService questionService;
+    private final MemberService memberService;
 
     @GetMapping("/list")
     public String list(Model model,
@@ -45,13 +48,19 @@ public class QuestionController {
     }
 
     @PostMapping("/create")
-    public String createQuestion(@Valid QuestionDto questionDto, BindingResult bindingResult) {
+    public String createQuestion(@Valid QuestionDto questionDto,
+                                 BindingResult bindingResult,
+                                 Principal principal,
+                                 Model model) {
+
         if (bindingResult.hasErrors()) {
+            model.addAttribute("questionDto", questionDto);
             return "question/inputForm";
         }
 
-        // 필요시 예외 처리 추가
-        questionService.create(questionDto);
+        Member member = memberService.getMember(principal.getName());
+
+        questionService.create(questionDto, member);
         return "redirect:/question/list";
     }
 
