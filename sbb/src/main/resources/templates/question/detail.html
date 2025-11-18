@@ -72,14 +72,14 @@
             <div class="my-3">
                 <!-- 답변 수정 버튼 -->
                 <a th:href="@{|/answer/modify/${answer.id}|}"
-                   class="btn btn-sm btn-outline-secondary"
+                   class="btn btn-sm btn-outline-primary"
                    sec:authorize="isAuthenticated()"
                    th:if="${answer.author != null and #authentication.getPrincipal().getUsername() == answer.author.username}"
                    th:text="수정"></a>
                 <!-- 답변 삭제 버튼 -->
                 <a href="javascript:void(0);"
                    th:data-uri="@{|/answer/delete/${answer.id}|}"
-                   class="delete btn btn-sm btn-outline-secondary"
+                   class="delete btn btn-sm btn-outline-danger"
                    sec:authorize="isAuthenticated()"
                    th:if="${answer.author != null and #authentication.getPrincipal().getUsername() == answer.author.username}"
                    th:text="삭제">
@@ -89,7 +89,8 @@
     </div>
     <!-- 답변 작성 -->
     <form th:action="@{/answer/create/{id}(id=${question.id})}" method="post" class="my-3" th:object="${answerDto}">
-        <textarea th:field="*{content}" name="content" id="content" rows="10" class="form-control"></textarea>
+        <textarea sec:authorize="isAuthenticated()"th:field="*{content}" name="content" rows="10" class="form-control"></textarea>
+        <textarea sec:authorize="isAnonymous()" disabled th:field="*{content}" name="content" rows="10" class="form-control"></textarea>
         <p th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="fieldError">답변 내용을 입력하세요</p>
         <input type="submit" value="답변 등록" class="btn btn-primary my-2">
     </form>
