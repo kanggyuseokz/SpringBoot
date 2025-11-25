@@ -5,6 +5,7 @@ import com.example.sbb.question.dto.QuestionDto;
 import com.example.sbb.question.entity.Question;
 import com.example.sbb.question.repository.QuestionRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -41,5 +42,16 @@ public class QuestionService {
                 .author(member)
                 .build();
         questionRepository.save(question);
+    }
+
+    public void modify(Question question, @Valid QuestionDto questionDto) {
+        question.setSubject(questionDto.getSubject());
+        question.setContent(questionDto.getContent());
+
+        questionRepository.save(question);
+    }
+
+    public void delete(Question question) {
+        questionRepository.delete(question);
     }
 }

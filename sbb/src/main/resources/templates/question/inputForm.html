@@ -13,7 +13,7 @@
 
 <div layout:fragment="content" class="container my-3">
     <h3 class="my-3 border-bottom pb-2">질문 등록</h3>
-    <form th:action="@{/question/create}" th:object="${questionDto}" method="post">
+    <form th:object="${questionDto}" method="post">
         <div class="mb-3 ">
             <label for="subject" class="form-label">제목</label>
             <input type="text" class="form-control" id="subject" name="subject" placeholder="제목을 입력하세요"

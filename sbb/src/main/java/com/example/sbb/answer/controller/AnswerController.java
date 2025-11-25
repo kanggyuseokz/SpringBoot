@@ -1,22 +1,24 @@
 package com.example.sbb.answer.controller;
 
 import com.example.sbb.answer.dto.AnswerDto;
+import com.example.sbb.answer.entity.Answer;
 import com.example.sbb.answer.repository.AnswerRepository;
 import com.example.sbb.answer.service.AnswerService;
 import com.example.sbb.member.entity.Member;
 import com.example.sbb.member.service.MemberService;
+import com.example.sbb.question.dto.QuestionDto;
 import com.example.sbb.question.entity.Question;
 import com.example.sbb.question.service.QuestionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
 
@@ -62,5 +64,18 @@ public class AnswerController {
 
         // 3. 리다이렉트
         return String.format("redirect:/question/detail/%d", id);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/modify/{id}")
+    public String modify(@PathVariable("id") Long id, AnswerDto answerDto, Principal principal) {
+        Question question = questionService.getQuestion(id);
+        Answer answer = answerService.getAnswer(id);
+        if(!answer.getAuthor().getUsername().equals(principal.getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정 권한이 없습니다.");
+        }
+        answerDto.setContent(answer.getContent());
+
+        return "answer/inputForm";
     }
 }
