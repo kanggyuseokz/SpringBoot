@@ -6,6 +6,17 @@
 
 <div layout:fragment="content" class="container my-3">
     <h1>질문 목록</h1>
+    <div class="row my-3">
+        <div class="col-6">
+            <a th:href="@{/question/create}" class="btn btn-primary">질문 등록하기</a>
+        </div>
+        <div class="col-6">
+            <div class="input-group">
+                <input th:type="text" id="search_keyword" class="form-control" th:value="${keyword}">
+                <button class="btn btn-outline-secondary" type="button" id="btn_search">찾기</button>
+            </div>
+        </div>
+    </div>
     <table class="table table-striped">
         <thead class="table-dark">
         <tr class="text-center">
@@ -81,9 +92,9 @@
     </div>
 
     <form th:action="@{/question/list}" method="get" id="searchForm">
+        <input type="hidden" id="keyword" name="keyword" th:value="${keyword}">
         <input type="hidden" id="page" name="page" th:value="${paging.number}">
     </form>
-    <a th:href="@{/question/create}" class="btn btn-primary">질문 등록</a>
 </div>
 
 <script layout:fragment="script" type='text/javascript'>
@@ -93,6 +104,21 @@
             document.getElementById('page').value = this.dataset.page;  // 클릭 이벤트가 발생하면, 해당 버튼의 data-page 속성 값을 읽어와 숨겨진 폼 필드 page의 값으로 설정
             document.getElementById('searchForm').submit(); // 사용자가 선택한 페이지 번호가 서버로 전송
         });
+    });
+
+    // 찾기 버튼 클릭
+    $("#btn_search").on("click", function () {
+        $("#keyword").val($("#search_keyword").val());
+        $("#page").val(0); // 검색버튼 클릭 시 0페이지부터 조회
+        $("#searchForm").submit();
+    });
+
+    // 엔터키 눌렀을 때 찾기 버튼 클릭
+    $("#search_keyword").on("keydown", function (e) {
+        if (e.key === "Enter") {
+            e.preventDefault(); // 폼 자동 제출 방지
+            $("#btn_search").click(); // 찾기 버튼 클릭과 동일 동작
+        }
     });
 </script>
 </html>
