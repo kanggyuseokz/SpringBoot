@@ -1,30 +1,80 @@
 <!DOCTYPE html>
-<!-- components/layout 파일의 layout 프래그먼트를 사용. title과 section을 파라미터로 전달 -->
 <html th:replace="~{components/layout :: layout(~{::title}, ~{::section})}" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>FlashFolio - AI Portfolio Generator</title>
 </head>
 <body>
 
-<!-- 이 section 태그 내부의 내용이 레이아웃의 content 부분에 들어갑니다 -->
-<section class="container text-center" style="max-width: 600px; margin-top: 100px;">
-    <h1 class="mb-4">GitHub README를 포트폴리오로!</h1>
-    <p class="text-muted mb-5">GitHub 리포지토리 주소만 입력하세요. AI가 멋진 포트폴리오 사이트를 만들어줍니다.</p>
+<section class="container text-center" style="max-width: 800px; margin-top: 80px;">
+    <!-- 메인 타이틀 및 입력 폼 -->
+    <div class="mb-5">
+        <h1 class="fw-bold mb-3 display-5">GitHub README를<br>포트폴리오로 만드세요</h1>
+        <p class="text-muted fs-5 mb-5">복잡한 설정 없이 주소만 넣으면 AI가 분석하여<br>멋진 웹사이트를 생성해줍니다.</p>
 
-    <!-- 에러 메시지 표시 -->
-    <div th:if="${param.error}" class="alert alert-danger">
-        <span th:if="${param.error[0] == 'notfound'}">GitHub 주소를 찾을 수 없습니다.</span>
-        <span th:if="${param.error[0] == 'ai'}">AI 분석 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.</span>
+        <!-- 에러 메시지 표시 -->
+        <div th:if="${param.error}" class="alert alert-danger shadow-sm">
+            <span th:if="${param.error[0] == 'notfound'}">GitHub 주소를 찾을 수 없습니다. (Public 저장소인지 확인해주세요)</span>
+            <span th:if="${param.error[0] == 'ai'}">AI 분석 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.</span>
+        </div>
+
+        <form action="/generate" method="post" class="card p-2 shadow-lg border-0" style="border-radius: 1rem;">
+            <div class="input-group input-group-lg">
+                <span class="input-group-text bg-white border-0 ps-3"><i class="bi bi-github"></i></span>
+                <input type="text" class="form-control border-0" id="url" name="url"
+                       placeholder="https://github.com/username/repository" required>
+                <button type="submit" class="btn btn-dark px-4 rounded-3 fw-bold">생성하기 ✨</button>
+            </div>
+        </form>
+        <p class="text-muted mt-2 small">* 로그인 시 결과를 영구 저장할 수 있습니다.</p>
     </div>
 
-    <form action="/generate" method="post" class="card p-4 shadow-sm">
-        <div class="mb-3">
-            <label for="url" class="form-label fw-bold">GitHub Repository URL</label>
-            <input type="text" class="form-control form-control-lg" id="url" name="url"
-                   placeholder="https://github.com/username/repository" required>
+    <!-- 결과 예시 섹션 -->
+    <div class="mt-5 pt-5 border-top">
+        <h3 class="fw-bold mb-4">👀 이런 결과물이 만들어져요</h3>
+
+        <div class="row g-4 text-start">
+            <!-- 예시 카드 -->
+            <div class="col-md-12">
+                <div class="card shadow border-0 overflow-hidden">
+                    <div class="card-header bg-light border-bottom d-flex align-items-center p-3">
+                        <div class="d-flex gap-2 me-auto">
+                            <span class="rounded-circle bg-danger" style="width:10px; height:10px;"></span>
+                            <span class="rounded-circle bg-warning" style="width:10px; height:10px;"></span>
+                            <span class="rounded-circle bg-success" style="width:10px; height:10px;"></span>
+                        </div>
+                        <div class="text-muted small">Generated Portfolio Preview</div>
+                    </div>
+                    <div class="card-body p-5 bg-white">
+                        <div class="text-center mb-4">
+                            <h2 class="fw-bold">My Awesome Project</h2>
+                            <p class="text-muted">Spring Boot와 AI를 활용한 자동화 서비스</p>
+                            <div class="d-flex justify-content-center gap-2 mt-3">
+                                <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3">Java</span>
+                                <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3">Spring Boot</span>
+                                <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3">OpenAI</span>
+                            </div>
+                        </div>
+                        <hr class="my-4 opacity-10">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5 class="fw-bold mb-3">🚀 Key Features</h5>
+                                <ul class="list-group list-group-flush small">
+                                    <li class="list-group-item px-0 border-0">✅ URL 입력만으로 자동 생성</li>
+                                    <li class="list-group-item px-0 border-0">✅ AI 기반 기술 스택 분석</li>
+                                    <li class="list-group-item px-0 border-0">✅ 반응형 웹 디자인 적용</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="bg-light p-3 rounded h-100 d-flex align-items-center justify-content-center text-muted">
+                                    <span>Project Screenshot & Details</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <button type="submit" class="btn btn-primary btn-lg w-100">✨ 포트폴리오 생성하기</button>
-    </form>
+    </div>
 </section>
 
 </body>

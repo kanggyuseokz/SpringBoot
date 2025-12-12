@@ -22,7 +22,7 @@
             <!-- 로그인 했을 때 -->
             <div th:if="${session.loginUser != null}" class="d-flex align-items-center gap-3">
                 <span class="text-white" th:text="${session.loginUser.username} + '님'"></span>
-                <form action="/logout" method="post" class="mb-0">
+                <form th:action="@{/logout}" method="post" class="mb-0">
                     <button type="submit" class="btn btn-outline-danger btn-sm">로그아웃</button>
                 </form>
             </div>

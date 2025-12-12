@@ -12,7 +12,8 @@
             <p class="text-muted small">보안을 위해 강력한 비밀번호를 사용해주세요.</p>
         </div>
 
-        <form action="/signup" method="post" th:object="${userCreateForm}">
+        <!-- [중요] action="/signup"을 th:action="@{/signup}"으로 변경 -->
+        <form th:action="@{/signup}" method="post" th:object="${userCreateForm}">
 
             <div th:if="${#fields.hasGlobalErrors()}" class="alert alert-danger">
                 <div th:each="err : ${#fields.globalErrors()}" th:text="${err}"></div>
@@ -31,8 +32,7 @@
                 <div class="form-text text-muted" style="font-size: 0.8rem;">
                     * 영문자와 숫자만 사용 가능 (3~25자)
                 </div>
-                <!-- 에러 메시지 표시 -->
-                <div class="text-danger small mt-1" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
             </div>
 
             <!-- 이메일 -->
@@ -77,7 +77,7 @@
         </form>
     </div>
 
-    <!-- 중복 확인 스크립트 (jQuery 사용) -->
+    <!-- 중복 확인 스크립트 -->
     <script>
         $(document).ready(function() {
             $('#btnCheckUsername').click(function() {
@@ -88,7 +88,6 @@
                     return;
                 }
 
-                // 정규식 검사 (프론트엔드 1차 검증)
                 const regex = /^[a-zA-Z0-9]+$/;
                 if (!regex.test(username)) {
                     alert("아이디는 영문자와 숫자만 가능합니다.");
