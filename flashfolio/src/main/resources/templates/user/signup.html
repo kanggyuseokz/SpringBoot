@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html th:replace="~{components/layout :: layout(~{::title}, ~{::section})}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>회원가입 - FlashFolio</title>
+</head>
+<body>
+
+<section class="d-flex align-items-center justify-content-center" style="min-height: 80vh;">
+    <div class="card p-4 shadow border-0" style="width: 450px;">
+        <div class="text-center mb-4">
+            <h3 class="fw-bold">회원가입</h3>
+            <p class="text-muted small">보안을 위해 강력한 비밀번호를 사용해주세요.</p>
+        </div>
+
+        <!-- [중요] action="/signup"을 th:action="@{/signup}"으로 변경 -->
+        <form th:action="@{/user/signup}" method="post" th:object="${userCreateForm}">
+
+            <div th:if="${#fields.hasGlobalErrors()}" class="alert alert-danger">
+                <div th:each="err : ${#fields.globalErrors()}" th:text="${err}"></div>
+            </div>
+
+            <!-- 아이디 + 중복확인 버튼 -->
+            <div class="mb-3">
+                <div class="input-group">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" th:field="*{username}" placeholder="아이디"
+                               th:classappend="${#fields.hasErrors('username')} ? 'is-invalid'">
+                        <label for="username">아이디</label>
+                    </div>
+                    <button class="btn btn-outline-secondary" type="button" id="btnCheckUsername">중복 확인</button>
+                </div>
+                <div class="form-text text-muted" style="font-size: 0.8rem;">
+                    * 영문자와 숫자만 사용 가능 (3~25자)
+                </div>
+                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+            </div>
+
+            <!-- 이메일 -->
+            <div class="mb-3">
+                <div class="form-floating">
+                    <input type="email" class="form-control" th:field="*{email}" placeholder="이메일"
+                           th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'">
+                    <label for="email">이메일</label>
+                </div>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+            </div>
+
+            <!-- 비밀번호 -->
+            <div class="mb-3">
+                <div class="form-floating">
+                    <input type="password" class="form-control" th:field="*{password}" placeholder="비밀번호"
+                           th:classappend="${#fields.hasErrors('password')} ? 'is-invalid'">
+                    <label for="password">비밀번호</label>
+                </div>
+                <div class="form-text text-muted" style="font-size: 0.8rem;">
+                    * 8자 이상, 영문/숫자/특수문자 포함 필수
+                </div>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+            </div>
+
+            <!-- 비밀번호 확인 -->
+            <div class="mb-4">
+                <div class="form-floating">
+                    <input type="password" class="form-control" th:field="*{passwordRepeat}" placeholder="비밀번호 확인"
+                           th:classappend="${#fields.hasErrors('passwordRepeat')} ? 'is-invalid'">
+                    <label for="passwordRepeat">비밀번호 확인</label>
+                </div>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('passwordRepeat')}" th:errors="*{passwordRepeat}"></div>
+            </div>
+
+            <button type="submit" class="btn btn-success w-100 py-2 mb-3 fw-bold">가입하기</button>
+
+            <div class="text-center">
+                <span class="text-muted small">이미 계정이 있으신가요?</span>
+                <a href="/login" class="text-decoration-none fw-bold ms-1">로그인</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- 중복 확인 스크립트 -->
+    <script>
+        $(document).ready(function() {
+            $('#btnCheckUsername').click(function() {
+                const username = $('#username').val();
+
+                if (!username) {
+                    alert("아이디를 입력해주세요.");
+                    return;
+                }
+
+                const regex = /^[a-zA-Z0-9]+$/;
+                if (!regex.test(username)) {
+                    alert("아이디는 영문자와 숫자만 가능합니다.");
+                    return;
+                }
+
+                $.ajax({
+                    url: '/user/check',
+                    type: 'GET',
+                    data: { username: username },
+                    success: function(response) {
+                        if (response.available) {
+                            alert("사용 가능한 아이디입니다.");
+                            $('#username').addClass('is-valid').removeClass('is-invalid');
+                        } else {
+                            alert("이미 사용 중인 아이디입니다.");
+                            $('#username').addClass('is-invalid').removeClass('is-valid');
+                        }
+                    },
+                    error: function() {
+                        alert("중복 확인 중 오류가 발생했습니다.");
+                    }
+                });
+            });
+        });
+    </script>
+</section>
+
+</body>
+</html>

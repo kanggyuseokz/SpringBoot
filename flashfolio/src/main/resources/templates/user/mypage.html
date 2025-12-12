@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html th:replace="~{components/layout :: layout(~{::title}, ~{::section})}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>마이페이지 - FlashFolio</title>
+</head>
+<body>
+
+<section class="container py-5">
+    <h2 class="fw-bold mb-4"><i class="fa-solid fa-user-gear me-2"></i> 마이페이지</h2>
+
+    <!-- 탭 네비게이션 -->
+    <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active fw-bold" id="portfolio-tab" data-bs-toggle="tab" data-bs-target="#portfolio-pane" type="button" role="tab">
+                📂 내 포트폴리오
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link fw-bold" id="password-tab" data-bs-toggle="tab" data-bs-target="#password-pane" type="button" role="tab">
+                🔒 비밀번호 변경
+            </button>
+        </li>
+    </ul>
+
+    <!-- 탭 컨텐츠 -->
+    <div class="tab-content" id="myTabContent">
+
+        <!-- 1. 포트폴리오 목록 탭 -->
+        <div class="tab-pane fade show active" id="portfolio-pane" role="tabpanel">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                <div class="col" th:each="p : ${portfolios}">
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold text-truncate" th:text="${p.title}">Title</h5>
+                            <p class="card-text text-muted small text-truncate" th:text="${p.summary}">Summary</p>
+                            <div class="mb-2">
+                                <span th:each="tech, iter : ${p.techStack}" th:if="${iter.index < 3}" class="badge bg-light text-dark border me-1" th:text="${tech}">Java</span>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-white border-top-0 text-end">
+                            <a th:href="@{/p/{id}(id=${p.id})}" class="btn btn-sm btn-primary">보기</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12" th:if="${portfolios.isEmpty()}">
+                    <div class="alert alert-light text-center py-5 border">
+                        <p class="text-muted mb-3">아직 생성한 포트폴리오가 없습니다.</p>
+                        <a href="/" class="btn btn-primary">새 포트폴리오 만들기</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. 비밀번호 변경 탭 -->
+        <div class="tab-pane fade" id="password-pane" role="tabpanel">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body p-4">
+                            <h5 class="card-title fw-bold mb-4">비밀번호 변경</h5>
+
+                            <form th:action="@{/user/change-password}" method="post" th:object="${passwordChangeForm}">
+
+                                <!-- 에러 메시지 -->
+                                <div th:if="${#fields.hasGlobalErrors()}" class="alert alert-danger">
+                                    <div th:each="err : ${#fields.globalErrors()}" th:text="${err}"></div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">현재 비밀번호</label>
+                                    <input type="password" class="form-control" th:field="*{currentPassword}"
+                                           th:classappend="${#fields.hasErrors('currentPassword')} ? 'is-invalid'">
+                                    <div class="invalid-feedback" th:errors="*{currentPassword}"></div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">새 비밀번호</label>
+                                    <input type="password" class="form-control" th:field="*{newPassword}"
+                                           th:classappend="${#fields.hasErrors('newPassword')} ? 'is-invalid'">
+                                    <div class="form-text small">* 8자 이상, 영문/숫자/특수문자 포함</div>
+                                    <div class="invalid-feedback" th:errors="*{newPassword}"></div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label">새 비밀번호 확인</label>
+                                    <input type="password" class="form-control" th:field="*{newPasswordRepeat}"
+                                           th:classappend="${#fields.hasErrors('newPasswordRepeat')} ? 'is-invalid'">
+                                    <div class="invalid-feedback" th:errors="*{newPasswordRepeat}"></div>
+                                </div>
+
+                                <button type="submit" class="btn btn-dark w-100">변경하기</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 탭 유지용 스크립트 (폼 에러 시 비밀번호 탭 열려있게) -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        // URL에 ?tab=password가 있거나, 폼 에러(.is-invalid)가 있으면 비밀번호 탭 활성화
+        if (urlParams.get('tab') === 'password' || document.querySelector('.is-invalid')) {
+            const triggerEl = document.querySelector('#password-tab');
+            const tab = new bootstrap.Tab(triggerEl);
+            tab.show();
+        }
+    });
+</script>
+
+</body>
+</html>
