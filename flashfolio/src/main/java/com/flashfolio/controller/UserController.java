@@ -31,7 +31,7 @@ public class UserController {
     private final PortfolioRepository portfolioRepository;
 
     // ... (기존 checkUsername, signup, login, logout 관련 메서드들 유지) ...
-    @GetMapping("/user/check")
+    @GetMapping("/check")
     @ResponseBody
     public ResponseEntity<Map<String, Boolean>> checkUsername(@RequestParam String username) {
         boolean isTaken = userService.isUsernameTaken(username);
@@ -101,7 +101,7 @@ public class UserController {
     }
 
     // === [추가] 비밀번호 변경 처리 ===
-    @PostMapping("/user/change-password")
+    @PostMapping("/change-password")
     public String changePassword(@Valid PasswordChangeForm form, BindingResult bindingResult,
                                  HttpSession session, Model model) {
         User loginUser = (User) session.getAttribute("loginUser");

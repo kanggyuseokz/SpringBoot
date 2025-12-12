@@ -12,9 +12,10 @@
             <p class="text-muted small">보안을 위해 강력한 비밀번호를 사용해주세요.</p>
         </div>
 
-        <!-- [중요] action="/signup"을 th:action="@{/signup}"으로 변경 -->
+        <!-- [중요] action="/signup"을 th:action="@{/signup}"으로 적용 -->
         <form th:action="@{/signup}" method="post" th:object="${userCreateForm}">
 
+            <!-- 글로벌 에러 메시지 -->
             <div th:if="${#fields.hasGlobalErrors()}" class="alert alert-danger">
                 <div th:each="err : ${#fields.globalErrors()}" th:text="${err}"></div>
             </div>
@@ -29,6 +30,7 @@
                     </div>
                     <button class="btn btn-outline-secondary" type="button" id="btnCheckUsername">중복 확인</button>
                 </div>
+                <!-- 유효성 검사 메시지 -->
                 <div class="form-text text-muted" style="font-size: 0.8rem;">
                     * 영문자와 숫자만 사용 가능 (3~25자)
                 </div>
@@ -68,11 +70,13 @@
                 <div class="invalid-feedback" th:if="${#fields.hasErrors('passwordRepeat')}" th:errors="*{passwordRepeat}"></div>
             </div>
 
+            <!-- 가입하기 버튼 -->
             <button type="submit" class="btn btn-success w-100 py-2 mb-3 fw-bold">가입하기</button>
 
+            <!-- 로그인 링크 -->
             <div class="text-center">
                 <span class="text-muted small">이미 계정이 있으신가요?</span>
-                <a href="/login" class="text-decoration-none fw-bold ms-1">로그인</a>
+                <a th:href="@{/login}" class="text-decoration-none fw-bold ms-1">로그인</a>
             </div>
         </form>
     </div>
@@ -95,15 +99,17 @@
                 }
 
                 $.ajax({
-                    url: '/user/check',
+                    url: '/check', // [수정] 컨트롤러 경로에 맞춰 /user/check -> /check 로 변경
                     type: 'GET',
                     data: { username: username },
                     success: function(response) {
                         if (response.available) {
                             alert("사용 가능한 아이디입니다.");
+                            // 성공 시 초록색 테두리
                             $('#username').addClass('is-valid').removeClass('is-invalid');
                         } else {
                             alert("이미 사용 중인 아이디입니다.");
+                            // 실패 시 빨간색 테두리
                             $('#username').addClass('is-invalid').removeClass('is-valid');
                         }
                     },

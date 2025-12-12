@@ -45,6 +45,11 @@ public class UserService {
         return userRepository.existsByUsername(username);
     }
 
+    public User getUser(String username) {
+        return this.userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+    }
+
     // [추가] 비밀번호 변경 로직
     @Transactional
     public void changePassword(User user, String newPassword) {
