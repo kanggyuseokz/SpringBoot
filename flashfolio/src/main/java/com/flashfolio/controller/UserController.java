@@ -1,15 +1,23 @@
 package com.flashfolio.controller;
 
+import com.flashfolio.dto.UserCreateForm;
 import com.flashfolio.entity.User;
 import com.flashfolio.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -17,30 +25,49 @@ public class UserController {
 
     private final UserService userService;
 
+    // === 아이디 중복 확인 API (AJAX용) ===
+    @GetMapping("/user/check")
+    @ResponseBody
+    public ResponseEntity<Map<String, Boolean>> checkUsername(@RequestParam String username) {
+        boolean isTaken = userService.isUsernameTaken(username);
+        // available: true면 사용 가능(중복 아님), false면 사용 불가(중복)
+        return ResponseEntity.ok(Map.of("available", !isTaken));
+    }
+
     // === 회원가입 ===
     @GetMapping("/signup")
-    public String signupForm() {
-        return "signup"; // signup.html 템플릿 필요
+    public String signupForm(UserCreateForm userCreateForm) {
+        return "signup";
     }
 
     @PostMapping("/signup")
-    public String signup(@RequestParam String username,
-                         @RequestParam String password,
-                         @RequestParam String email,
-                         Model model) {
-        try {
-            userService.signup(username, password, email);
-            return "redirect:/login"; // 가입 성공 시 로그인 페이지로
-        } catch (IllegalArgumentException e) {
-            model.addAttribute("error", e.getMessage());
+    public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             return "signup";
         }
+
+        if (!userCreateForm.getPassword().equals(userCreateForm.getPasswordRepeat())) {
+            bindingResult.rejectValue("passwordRepeat", "passwordInCorrect", "2개의 비밀번호가 일치하지 않습니다.");
+            return "signup";
+        }
+
+        try {
+            userService.signup(userCreateForm.getUsername(), userCreateForm.getPassword(), userCreateForm.getEmail());
+        } catch (DataIntegrityViolationException e) {
+            bindingResult.reject("signupFailed", "이미 등록된 사용자입니다.");
+            return "signup";
+        } catch (Exception e) {
+            bindingResult.reject("signupFailed", e.getMessage());
+            return "signup";
+        }
+
+        return "redirect:/login";
     }
 
     // === 로그인 ===
     @GetMapping("/login")
     public String loginForm() {
-        return "login"; // login.html 템플릿 필요
+        return "login";
     }
 
     @PostMapping("/login")
@@ -56,11 +83,10 @@ public class UserController {
             return "login";
         }
 
-        // 로그인 성공 처리: 세션에 사용자 정보 저장
         HttpSession session = request.getSession();
         session.setAttribute("loginUser", loginUser);
 
-        return "redirect:/"; // 메인 페이지로 이동
+        return "redirect:/";
     }
 
     // === 로그아웃 ===
@@ -68,7 +94,7 @@ public class UserController {
     public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
-            session.invalidate(); // 세션 제거
+            session.invalidate();
         }
         return "redirect:/";
     }
