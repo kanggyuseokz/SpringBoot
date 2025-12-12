@@ -1,8 +1,7 @@
 package com.flashfolio.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -15,7 +14,7 @@ public class Portfolio {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY) // User와 연관관계 추가
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -36,24 +35,45 @@ public class Portfolio {
     @ElementCollection
     private List<String> features;
 
-    // 생성자 수정 (User 추가)
-    public Portfolio(User user, String githubUrl, String title, String summary, String contentHtml, List<String> techStack, List<String> features) {
-        this.user = user; // 사용자 정보 저장
-        this.githubUrl = githubUrl;
-        this.title = title;
-        this.summary = summary;
-        this.contentHtml = contentHtml;
-        this.techStack = techStack;
-        this.features = features;
+    // --- [신규 추가] 트러블 슈팅, 아키텍처, 실행 방법 필드 ---
+
+    @ElementCollection
+    @CollectionTable(name = "portfolio_troubleshooting", joinColumns = @JoinColumn(name = "portfolio_id"))
+    private List<TroubleShooting> troubleshooting;
+
+    @Column(columnDefinition = "TEXT")
+    private String architecture;
+
+    @Column(columnDefinition = "TEXT")
+    private String gettingStarted;
+
+    // --- [신규 추가] 트러블 슈팅 정보를 담을 내부 클래스 ---
+    @Embeddable
+    @Getter @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class TroubleShooting {
+        @Column(columnDefinition = "TEXT")
+        private String problem;
+
+        @Column(columnDefinition = "TEXT")
+        private String solution;
     }
 
-    // 임시 생성자 (비로그인용 - User 없이 생성 가능하도록 유지하거나, 비로그인 시 저장을 안 하므로 이 생성자는 사실상 DTO 변환용 등으로 쓰일 수 있음)
-    public Portfolio(String githubUrl, String title, String summary, String contentHtml, List<String> techStack, List<String> features) {
+    // 생성자 업데이트 (모든 필드 포함)
+    @Builder // 빌더 패턴을 쓰면 생성자 순서 헷갈릴 일이 없어 추천합니다 (선택사항)
+    public Portfolio(User user, String githubUrl, String title, String summary, String contentHtml,
+                     List<String> techStack, List<String> features,
+                     List<TroubleShooting> troubleshooting, String architecture, String gettingStarted) {
+        this.user = user;
         this.githubUrl = githubUrl;
         this.title = title;
         this.summary = summary;
         this.contentHtml = contentHtml;
         this.techStack = techStack;
         this.features = features;
+        this.troubleshooting = troubleshooting;
+        this.architecture = architecture;
+        this.gettingStarted = gettingStarted;
     }
 }
