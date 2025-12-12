@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<!-- components/layout 파일의 layout 프래그먼트를 사용. title과 section을 파라미터로 전달 -->
+<html th:replace="~{components/layout :: layout(~{::title}, ~{::section})}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>FlashFolio - AI Portfolio Generator</title>
+</head>
+<body>
+
+<!-- 이 section 태그 내부의 내용이 레이아웃의 content 부분에 들어갑니다 -->
+<section class="container text-center" style="max-width: 600px; margin-top: 100px;">
+    <h1 class="mb-4">GitHub README를 포트폴리오로!</h1>
+    <p class="text-muted mb-5">GitHub 리포지토리 주소만 입력하세요. AI가 멋진 포트폴리오 사이트를 만들어줍니다.</p>
+
+    <!-- 에러 메시지 표시 -->
+    <div th:if="${param.error}" class="alert alert-danger">
+        <span th:if="${param.error[0] == 'notfound'}">GitHub 주소를 찾을 수 없습니다.</span>
+        <span th:if="${param.error[0] == 'ai'}">AI 분석 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.</span>
+    </div>
+
+    <form action="/generate" method="post" class="card p-4 shadow-sm">
+        <div class="mb-3">
+            <label for="url" class="form-label fw-bold">GitHub Repository URL</label>
+            <input type="text" class="form-control form-control-lg" id="url" name="url"
+                   placeholder="https://github.com/username/repository" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg w-100">✨ 포트폴리오 생성하기</button>
+    </form>
+</section>
+
+</body>
+</html>
