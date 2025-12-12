@@ -5,18 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title th:replace="${title}">FlashFolio</title>
 
-    <!-- 로컬 Bootstrap CSS 연결 -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        html, body { height: 100%; }
+        body { display: flex; flex-direction: column; }
+        main { flex: 1; }
+        .hover-white:hover { color: white !important; }
+    </style>
 </head>
 <body class="bg-light">
 
-<!-- 헤더 컴포넌트 -->
+<!-- [추가] 사이드바 컴포넌트 포함 -->
+<div th:replace="~{components/sidebar :: sidebar}"></div>
+
 <div th:replace="~{components/header :: header}"></div>
 
-<!-- 컨텐츠 영역 -->
-<div th:replace="${content}"></div>
+<main th:replace="${content}"></main>
 
-<!-- 로컬 JS 파일 연결 (jQuery, Bootstrap Bundle) -->
+<div th:replace="~{components/footer :: footer}"></div>
+
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap.bundle.min.js"></script>
 

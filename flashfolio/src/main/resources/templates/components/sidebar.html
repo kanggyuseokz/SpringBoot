@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!-- Offcanvas Sidebar Component -->
+<div class="offcanvas offcanvas-start bg-dark text-white" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel" th:fragment="sidebar">
+    <div class="offcanvas-header border-bottom border-secondary">
+        <h5 class="offcanvas-title fw-bold" id="offcanvasSidebarLabel">⚡ FlashFolio</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body d-flex flex-column p-3">
+
+        <div class="mb-4 text-center" th:if="${session.loginUser != null}">
+            <div class="rounded-circle bg-secondary d-inline-flex align-items-center justify-content-center text-white mb-2" style="width: 60px; height: 60px; font-size: 24px;">
+                <i class="fa-solid fa-user"></i>
+            </div>
+            <h5 th:text="${session.loginUser.username}">Username</h5>
+            <small class="text-white-50" th:text="${session.loginUser.email}">email@example.com</small>
+        </div>
+
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item mb-2">
+                <a href="/" class="nav-link text-white" th:classappend="${#request.requestURI == '/'} ? 'active bg-primary' : ''">
+                    <i class="fa-solid fa-house me-2"></i> 홈
+                </a>
+            </li>
+            <li class="nav-item mb-2">
+                <a href="/mypage" class="nav-link text-white" th:classappend="${#request.requestURI == '/mypage'} ? 'active bg-primary' : ''">
+                    <i class="fa-solid fa-folder-open me-2"></i> 내 포트폴리오
+                </a>
+            </li>
+            <li class="nav-item mb-2">
+                <!-- 마이페이지 내의 비밀번호 변경 탭으로 이동한다고 가정 -->
+                <a href="/mypage?tab=password" class="nav-link text-white">
+                    <i class="fa-solid fa-key me-2"></i> 비밀번호 변경
+                </a>
+            </li>
+        </ul>
+
+        <hr class="border-secondary">
+
+        <div th:if="${session.loginUser != null}">
+            <form th:action="@{/logout}" method="post" class="mb-0">
+                <button type="submit" class="btn btn-outline-danger w-100">
+                    <i class="fa-solid fa-right-from-bracket me-2"></i> 로그아웃
+                </button>
+            </form>
+        </div>
+        <div th:if="${session.loginUser == null}">
+            <a href="/login" class="btn btn-outline-light w-100 mb-2">로그인</a>
+            <a href="/signup" class="btn btn-primary w-100">회원가입</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

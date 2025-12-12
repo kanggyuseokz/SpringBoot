@@ -2,26 +2,32 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-5" th:fragment="header">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-0" th:fragment="header"> <!-- mb-5 제거 (컨텐츠와 너무 멀어지지 않게) -->
     <div class="container">
+        <!-- [추가] 사이드바 토글 버튼 (햄버거 메뉴) -->
+        <button class="btn btn-outline-secondary border-0 me-3 text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar">
+            <i class="fa-solid fa-bars fs-5"></i>
+        </button>
+
         <a class="navbar-brand" href="/">⚡ FlashFolio</a>
 
-        <!-- 모바일 화면용 햄버거 버튼 (Bootstrap JS 필요) -->
+        <!-- 모바일용 네비 토글러 -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <!-- 메뉴 목록 (모바일에서 접히는 부분) -->
         <div class="collapse navbar-collapse justify-content-end" id="navbarContent">
-            <!-- 로그인 안 했을 때 -->
+            <!-- PC 화면 상단 메뉴 -->
             <div th:if="${session.loginUser == null}" class="d-flex gap-2">
                 <a href="/login" class="btn btn-outline-light btn-sm">로그인</a>
                 <a href="/signup" class="btn btn-primary btn-sm">회원가입</a>
             </div>
 
-            <!-- 로그인 했을 때 -->
             <div th:if="${session.loginUser != null}" class="d-flex align-items-center gap-3">
-                <span class="text-white" th:text="${session.loginUser.username} + '님'"></span>
+                <a href="/mypage" class="text-white text-decoration-none small">
+                    <i class="fa-solid fa-user-circle me-1"></i>
+                    <span th:text="${session.loginUser.username}">User</span>
+                </a>
                 <form th:action="@{/logout}" method="post" class="mb-0">
                     <button type="submit" class="btn btn-outline-danger btn-sm">로그아웃</button>
                 </form>

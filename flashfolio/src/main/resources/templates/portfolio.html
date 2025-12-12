@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html th:replace="~{components/layout :: layout(~{::title}, ~{::section})}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${portfolio.title} + ' - FlashFolio'">Portfolio</title>
+</head>
+<body>
+
+<section class="container mb-5">
+    <!-- GitHub Markdown 스타일 CSS (필요한 경우 로컬로 다운로드해서 /css/ 폴더에 넣고 링크 수정 가능) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css">
+    <style>
+        .markdown-body {
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+        }
+        @media (max-width: 767px) {
+            .markdown-body {
+                padding: 15px;
+            }
+        }
+    </style>
+
+    <div class="row justify-content-center mt-4">
+        <div class="col-lg-10">
+            <!-- 요약 카드 -->
+            <div class="card shadow-sm mb-4 border-0 bg-white">
+                <div class="card-body p-5 text-center">
+                    <h1 class="display-5 fw-bold mb-3" th:text="${portfolio.title}">Project Title</h1>
+                    <p class="lead text-muted mb-4" th:text="${portfolio.summary}">Summary goes here...</p>
+
+                    <div class="mb-4">
+                        <span th:each="tech : ${portfolio.techStack}"
+                              class="badge rounded-pill bg-primary bg-opacity-10 text-primary me-1 mb-1 px-3 py-2"
+                              style="font-size: 0.9em;"
+                              th:text="${tech}">Java</span>
+                    </div>
+
+                    <div>
+                        <a th:href="${portfolio.githubUrl}" target="_blank" class="btn btn-dark px-4 py-2">
+                            <i class="bi bi-github"></i> GitHub Repository 방문
+                        </a>
+                        <a href="/" class="btn btn-outline-secondary ms-2 px-4 py-2">다른 프로젝트 생성</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 주요 기능 -->
+            <div class="mb-5">
+                <h4 class="fw-bold border-bottom pb-2 mb-3">🚀 Key Features</h4>
+                <div class="list-group list-group-flush shadow-sm rounded">
+                    <div th:each="feature : ${portfolio.features}" class="list-group-item list-group-item-action py-3">
+                        <span class="fw-medium">✅ <span th:text="${feature}">Feature</span></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 상세 내용 (Markdown -> HTML) -->
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white py-3">
+                    <span class="fw-bold fs-5">📋 상세 설명</span>
+                </div>
+                <div class="card-body p-0">
+                    <article class="markdown-body" th:utext="${portfolio.contentHtml}"></article>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>
