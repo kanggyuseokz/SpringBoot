@@ -5,15 +5,6 @@
 </head>
 <body>
 
-<!-- [추가] 로딩 오버레이 (평소엔 숨겨져 있음) -->
-<div id="loadingOverlay" class="d-none position-fixed top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-flex flex-column justify-content-center align-items-center" style="z-index: 9999;">
-    <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;">
-        <span class="visually-hidden">Loading...</span>
-    </div>
-    <h4 class="fw-bold text-dark">AI가 포트폴리오를 생성 중입니다 🤖</h4>
-    <p class="text-muted">README 내용에 따라 최대 30초 정도 걸릴 수 있어요.</p>
-</div>
-
 <section class="container text-center" style="max-width: 800px; margin-top: 80px;">
     <!-- 메인 타이틀 및 입력 폼 -->
     <div class="mb-5">
@@ -27,11 +18,12 @@
             <span th:if="${param.error[0] == 'unauthorized'}">삭제 권한이 없습니다.</span>
         </div>
 
-        <!-- [핵심] onsubmit에서 로딩창 표시 함수 호출 -->
+        <!-- [핵심 1] th:action 사용 -->
         <form th:action="@{/generate}" method="post" class="card p-2 shadow-lg border-0" style="border-radius: 1rem;" onsubmit="return validateGithubUrl()">
             <div class="input-group input-group-lg">
                 <span class="input-group-text bg-white border-0 ps-3"><i class="bi bi-github"></i></span>
 
+                <!-- [핵심 2] name="url", id="url"로 통일 (컨트롤러와 자바스크립트 모두를 위해) -->
                 <input type="text" class="form-control border-0" id="url" name="url"
                        placeholder="https://github.com/username/repository" required>
 
@@ -89,23 +81,16 @@
         </div>
     </div>
 </section>
-
 <script>
     function validateGithubUrl() {
+        // [핵심 3] HTML id와 맞춰서 'url'로 가져오기
         const input = document.getElementById('url');
         const url = input.value.trim();
 
-        // 1. 유효성 검사 실패 시
         if (!url || !url.includes("github.com")) {
             alert("올바른 GitHub 저장소 주소를 입력해주세요!\n예: https://github.com/사용자명/프로젝트명");
             return false;
         }
-
-        // 2. 유효성 검사 성공 시 -> 로딩창 보여주기!
-        // d-none(숨김) 클래스를 제거하고 d-flex(보임)를 유지
-        const overlay = document.getElementById('loadingOverlay');
-        overlay.classList.remove('d-none');
-
         return true;
     }
 </script>

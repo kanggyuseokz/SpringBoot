@@ -59,7 +59,7 @@
                         <div class="card-body p-4">
                             <h5 class="card-title fw-bold mb-4">비밀번호 변경</h5>
 
-                            <form th:action="@{/user/change-password}" method="post" th:object="${passwordChangeForm}">
+                            <form th:action="@{/change-password}" method="post" th:object="${passwordChangeForm}">
 
                                 <!-- 에러 메시지 -->
                                 <div th:if="${#fields.hasGlobalErrors()}" class="alert alert-danger">

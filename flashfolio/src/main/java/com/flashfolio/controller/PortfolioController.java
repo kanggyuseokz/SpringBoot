@@ -86,7 +86,7 @@ public class PortfolioController {
                 .map(p -> {
                     // Entity -> DTO 변환 후 모델에 추가
                     model.addAttribute("portfolio", PortfolioResponseDto.from(p));
-                    return "portfolio/view";
+                    return "portfolio";
                 })
                 .orElse("redirect:/");
     }
@@ -104,6 +104,6 @@ public class PortfolioController {
         }
 
         portfolioRepository.delete(portfolio);
-        return "redirect:/user/mypage"; // 삭제 후 마이페이지로 이동
+        return "redirect:/mypage"; // 삭제 후 마이페이지로 이동
     }
 }
