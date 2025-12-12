@@ -5,14 +5,30 @@
 <footer class="bg-dark text-white text-center py-4 mt-5" th:fragment="footer">
     <div class="container">
         <div class="row">
+            <!-- 좌측: 서비스 이름 및 확대된 Gemini 배지 -->
             <div class="col-md-4 mb-3 mb-md-0 text-md-start">
-                <h5 class="text-uppercase mb-2 fw-bold">FlashFolio</h5>
-                <p class="small text-white-50">
-                    AI-Powered Portfolio Generator<br>
-                    GitHub README를 멋진 포트폴리오로 만들어보세요.
-                </p>
+                <h5 class="text-uppercase mb-3 fw-bold">FlashFolio</h5>
+
+                <!-- 텍스트 제거하고 바로 배지 배치 (크기 확대: 폰트 1rem, 패딩 증가) -->
+                <div class="d-inline-flex align-items-center px-4 py-2 rounded-pill border border-secondary" style="background-color: rgba(255, 255, 255, 0.05); font-size: 1rem;">
+                    <!-- 아이콘 크기 14 -> 20으로 확대 -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" class="me-2">
+                        <path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z" fill="url(#geminiGradientFooter)"/>
+                        <defs>
+                            <linearGradient id="geminiGradientFooter" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stop-color="#4E95FF" />
+                                <stop offset="100%" stop-color="#FF5D5D" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <span class="text-white-50 me-2">Powered by</span>
+                    <span class="fw-bold" style="background: linear-gradient(90deg, #4E95FF, #FF5D5D); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                        Google Gemini
+                    </span>
+                </div>
             </div>
 
+            <!-- 중앙: 링크 -->
             <div class="col-md-4 mb-3 mb-md-0">
                 <h6 class="text-uppercase mb-3 fw-bold">Links</h6>
                 <ul class="list-unstyled mb-0">
@@ -22,6 +38,7 @@
                 </ul>
             </div>
 
+            <!-- 우측: 소셜 및 저작권 -->
             <div class="col-md-4 text-md-end">
                 <h6 class="text-uppercase mb-3 fw-bold">Connect</h6>
                 <a href="#" class="text-white me-3 text-decoration-none fs-5"><i class="fab fa-github"></i></a>

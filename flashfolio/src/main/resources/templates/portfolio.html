@@ -6,7 +6,7 @@
 <body>
 
 <section class="container mb-5">
-    <!-- GitHub Markdown 스타일 CSS (필요한 경우 로컬로 다운로드해서 /css/ 폴더에 넣고 링크 수정 가능) -->
+    <!-- GitHub Markdown 스타일 CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css">
     <style>
         .markdown-body {
@@ -21,11 +21,15 @@
                 padding: 15px;
             }
         }
+        /* 뱃지 호버 효과 */
+        .tech-badge { transition: transform 0.2s; }
+        .tech-badge:hover { transform: translateY(-2px); }
     </style>
 
     <div class="row justify-content-center mt-4">
         <div class="col-lg-10">
-            <!-- 요약 카드 -->
+
+            <!-- 1. 프로젝트 헤더 & 요약 -->
             <div class="card shadow-sm mb-4 border-0 bg-white">
                 <div class="card-body p-5 text-center">
                     <h1 class="display-5 fw-bold mb-3" th:text="${portfolio.title}">Project Title</h1>
@@ -33,7 +37,7 @@
 
                     <div class="mb-4">
                         <span th:each="tech : ${portfolio.techStack}"
-                              class="badge rounded-pill bg-primary bg-opacity-10 text-primary me-1 mb-1 px-3 py-2"
+                              class="badge rounded-pill bg-primary bg-opacity-10 text-primary me-1 mb-1 px-3 py-2 tech-badge"
                               style="font-size: 0.9em;"
                               th:text="${tech}">Java</span>
                     </div>
@@ -47,17 +51,73 @@
                 </div>
             </div>
 
-            <!-- 주요 기능 -->
+            <!-- 2. 핵심 기능 (Key Features) - 디자인 개선 -->
             <div class="mb-5">
                 <h4 class="fw-bold border-bottom pb-2 mb-3">🚀 Key Features</h4>
-                <div class="list-group list-group-flush shadow-sm rounded">
-                    <div th:each="feature : ${portfolio.features}" class="list-group-item list-group-item-action py-3">
-                        <span class="fw-medium">✅ <span th:text="${feature}">Feature</span></span>
+                <div class="row g-3">
+                    <div th:each="feature : ${portfolio.features}" class="col-md-6">
+                        <div class="card h-100 border-0 shadow-sm bg-light">
+                            <div class="card-body d-flex align-items-center">
+                                <span class="fs-4 me-3">✨</span>
+                                <span class="fw-medium" th:text="${feature}">Feature Description</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 상세 내용 (Markdown -> HTML) -->
+            <!-- 3. 트러블 슈팅 (Troubleshooting) - [신규 추가] -->
+            <!-- 백엔드 데이터가 있을 때만 표시 (th:if) -->
+            <div class="mb-5" th:if="${portfolio.troubleshooting != null and !portfolio.troubleshooting.isEmpty()}">
+                <h4 class="fw-bold border-bottom pb-2 mb-3">🛠️ Troubleshooting & Challenges</h4>
+                <div class="accordion shadow-sm" id="accordionTrouble">
+                    <div th:each="item, stat : ${portfolio.troubleshooting}" class="accordion-item">
+                        <h2 class="accordion-header" th:id="'heading' + ${stat.index}">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    th:data-bs-target="'#collapse' + ${stat.index}" aria-expanded="false"
+                                    th:aria-controls="'collapse' + ${stat.index}">
+                                <span class="fw-bold text-danger me-2">Problem:</span>
+                                <span th:text="${item.problem}">문제점</span>
+                            </button>
+                        </h2>
+                        <div th:id="'collapse' + ${stat.index}" class="accordion-collapse collapse"
+                             th:aria-labelledby="'heading' + ${stat.index}" data-bs-parent="#accordionTrouble">
+                            <div class="accordion-body bg-light">
+                                <strong class="text-success">✅ Solution:</strong>
+                                <p class="mb-0 mt-1" th:text="${item.solution}">해결 방법</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. 아키텍처 및 실행 방법 - [신규 추가] -->
+            <div class="row mb-5" th:if="${portfolio.architecture != null or portfolio.gettingStarted != null}">
+                <!-- 아키텍처 -->
+                <div class="col-md-6" th:if="${portfolio.architecture != null}">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="fw-bold mb-3">🏗️ System Architecture</h5>
+                            <p class="card-text text-muted" th:text="${portfolio.architecture}">
+                                아키텍처 설명...
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- 실행 방법 -->
+                <div class="col-md-6" th:if="${portfolio.gettingStarted != null}">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="fw-bold mb-3">⚡ Getting Started</h5>
+                            <div class="bg-dark text-white p-3 rounded overflow-auto" style="max-height: 200px;">
+                                <pre class="mb-0"><code th:text="${portfolio.gettingStarted}">npm install...</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. 상세 내용 (Markdown) -->
             <div class="card shadow-sm border-0">
                 <div class="card-header bg-white py-3">
                     <span class="fw-bold fs-5">📋 상세 설명</span>

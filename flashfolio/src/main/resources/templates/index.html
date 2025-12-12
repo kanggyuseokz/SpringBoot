@@ -17,10 +17,10 @@
             <span th:if="${param.error[0] == 'ai'}">AI 분석 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.</span>
         </div>
 
-        <form action="/generate" method="post" class="card p-2 shadow-lg border-0" style="border-radius: 1rem;">
+        <form action="/generate" method="post" class="card p-2 shadow-lg border-0" style="border-radius: 1rem;" onsubmit="return validateGithubUrl()">
             <div class="input-group input-group-lg">
                 <span class="input-group-text bg-white border-0 ps-3"><i class="bi bi-github"></i></span>
-                <input type="text" class="form-control border-0" id="url" name="url"
+                <input type="text" class="form-control border-0" id="repoUrl" name="repoUrl"
                        placeholder="https://github.com/username/repository" required>
                 <button type="submit" class="btn btn-dark px-4 rounded-3 fw-bold">생성하기 ✨</button>
             </div>
@@ -76,6 +76,19 @@
         </div>
     </div>
 </section>
+<script>
+    function validateGithubUrl() {
+        // 1. 입력창의 ID가 'repoInput'인지 확인해주세요 (다르면 맞춰줘야 함)
+        const input = document.getElementById('repoInput');
+        const url = input.value.trim();
 
+        // 2. 주소가 비어있거나 github.com이 포함되지 않았다면 경고
+        if (!url || !url.includes("github.com")) {
+            alert("올바른 GitHub 저장소 주소를 입력해주세요!\n예: https://github.com/사용자명/프로젝트명");
+            return false; // 서버로 전송되는 것을 막음
+        }
+        return true; // 문제 없으면 전송
+    }
+</script>
 </body>
 </html>

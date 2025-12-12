@@ -20,17 +20,19 @@
 
         <ul class="nav nav-pills flex-column mb-auto">
             <li class="nav-item mb-2">
-                <a href="/" class="nav-link text-white" th:classappend="${#request.requestURI == '/'} ? 'active bg-primary' : ''">
+                <!-- Thymeleaf 3.1+ 에서는 #request 대신 #httpServletRequest 사용 -->
+                <a href="/" class="nav-link text-white"
+                   th:classappend="${requestURI == '/'} ? 'active bg-primary'">
                     <i class="fa-solid fa-house me-2"></i> 홈
                 </a>
             </li>
             <li class="nav-item mb-2">
-                <a href="/mypage" class="nav-link text-white" th:classappend="${#request.requestURI == '/mypage'} ? 'active bg-primary' : ''">
+                <a href="/mypage" class="nav-link text-white"
+                   th:classappend="${requestURI == '/mypage'} ? 'active bg-primary'">
                     <i class="fa-solid fa-folder-open me-2"></i> 내 포트폴리오
                 </a>
             </li>
             <li class="nav-item mb-2">
-                <!-- 마이페이지 내의 비밀번호 변경 탭으로 이동한다고 가정 -->
                 <a href="/mypage?tab=password" class="nav-link text-white">
                     <i class="fa-solid fa-key me-2"></i> 비밀번호 변경
                 </a>
